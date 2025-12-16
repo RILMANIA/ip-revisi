@@ -1,4 +1,6 @@
 const { User } = require("../models/index");
+const { comparePassword } = require("../helpers/bcrypt");
+const { signToken } = require("../helpers/jwt");
 
 class UserController {
   static async register(req, res) {
