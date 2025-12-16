@@ -1,4 +1,4 @@
-const { Favorite, Build } = require("../models");
+const { Favorite, Build, User } = require("../models");
 
 class mainController {
   // get user profile
@@ -143,6 +143,25 @@ class mainController {
       res.status(200).json({ message: "Build deleted successfully" });
     } catch (error) {
       console.log(error, "<<<< error deleteBuild mainController");
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // get public builds
+  static async getPublicBuilds(req, res) {
+    try {
+      const builds = await Build.findAll({
+        where: { isPublic: true },
+        include: [
+          {
+            model: User,
+            attributes: ["id", "name"],
+          },
+        ],
+      });
+      res.status(200).json(builds);
+    } catch (error) {
+      console.log(error, "<<<< error getPublicBuilds mainController");
       res.status(500).json({ message: "Internal Server Error" });
     }
   }

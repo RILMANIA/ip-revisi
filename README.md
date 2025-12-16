@@ -1,9 +1,5 @@
 # ip-revisi
 
-Perfect — this will **lock in your score** and make your submission **very easy to evaluate**.
-
-Below is a **COMPLETE, CLEAN, and GRADING-FRIENDLY README** followed by a **Submission Checklist** you can literally tick off before turning it in.
-
 ---
 
 # 📘 README
@@ -281,3 +277,22 @@ This project demonstrates the integration of AI technology into a game-based web
 “This project applies AI-powered personalization using OpenAI GPT API and external game data through a RESTful client–server architecture, with comprehensive testing and deployment.”
 
 ---
+
+I am making a game project with genshin impact as a theme. This project applies AI-powered personalization using OpenAI GPT API (link: https://openai.com/api/) and external game data through a RESTful client–server architecture. The game data is extracted from a 3rd party API (link: https://genshin.jmp.blue/).
+
+In this project:
+
+1. users can register and login using name, email and password.
+2. users can login throught their google account (social media login)
+3. diplay genshin impact characters with card formats
+4. select and view a specific character and their details
+5. select a specific charater and add it to a user's favorite list.
+6. users can make a build for a specific character with artifacts and weapons.
+7. users can only delete their own builds and favorite characters.
+8. users can only update their own builds.
+9. users can display their characters along with their selected builds in public pages.
+10. use AI to explain a character and recommend builds
+
+Use redux state management for the client side.
+
+Make the client side

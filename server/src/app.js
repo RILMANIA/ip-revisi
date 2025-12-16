@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 
@@ -6,12 +7,15 @@ const port = 3000;
 const authentication = require("./middlewares/authentication");
 const { guardFavorite, guardBuild } = require("./middlewares/guardOwner");
 
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // import controllers
 const userController = require("./controllers/userController");
 const mainController = require("./controllers/mainController");
+const googleAuthController = require("./controllers/googleAuthController");
+const aiController = require("./controllers/aiController");
 
 app.get("/", (req, res) => {
   res.redirect("/login");
@@ -20,6 +24,10 @@ app.get("/", (req, res) => {
 // user endpoints
 app.post("/register", userController.register);
 app.post("/login", userController.login);
+app.post("/google-login", googleAuthController.googleLogin);
+
+// public endpoints
+app.get("/public/builds", mainController.getPublicBuilds);
 
 // protected routes
 app.use(authentication);
@@ -35,6 +43,10 @@ app.post("/builds", mainController.addBuild);
 app.get("/builds", mainController.getBuilds);
 app.put("/builds/:id", guardBuild, mainController.updateBuild);
 app.delete("/builds/:id", guardBuild, mainController.deleteBuild);
+
+// AI endpoints
+app.post("/ai/explain", aiController.explainCharacter);
+app.post("/ai/recommend", aiController.recommendBuild);
 
 // Only start server if not in test environment
 if (process.env.NODE_ENV !== "test") {

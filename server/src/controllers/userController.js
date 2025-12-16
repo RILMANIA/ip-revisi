@@ -30,12 +30,8 @@ class UserController {
   }
   static async login(req, res, next) {
     try {
-      const { name, email, password } = req.body;
+      const { email, password } = req.body;
 
-      if (!name) {
-        res.status(400).json({ message: "Name is required" });
-        return;
-      }
       if (!email) {
         res.status(400).json({ message: "Email is required" });
         return;
@@ -61,7 +57,14 @@ class UserController {
         return;
       }
 
-      res.json({ access_token: signToken({ id: user.id }) });
+      res.json({
+        access_token: signToken({ id: user.id }),
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+      });
     } catch (err) {
       res.status(500).json({
         message: "Internal server error",

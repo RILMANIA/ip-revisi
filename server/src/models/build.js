@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       weapon: DataTypes.STRING,
       artifact: DataTypes.STRING,
       notes: DataTypes.STRING,
+      isPublic: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
