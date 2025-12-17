@@ -35,7 +35,33 @@ class AIController {
             {
               parts: [
                 {
-                  text: `You are a Genshin Impact expert. Provide detailed character lore and story information. Explain the lore and story of ${characterName} from Genshin Impact.`,
+                  text: `You are a Genshin Impact expert. Provide a well-organized explanation about ${characterName} from Genshin Impact.
+
+IMPORTANT: Add TWO line breaks between each section for better readability.
+
+Format your response exactly like this:
+
+CHARACTER OVERVIEW
+Brief introduction to who they are (1-2 sentences)
+
+
+BACKGROUND & LORE
+Their story, origins, and role in the game's world (2-3 sentences)
+
+
+PERSONALITY & TRAITS
+Key personality characteristics and notable qualities (2-3 sentences)
+
+
+ABILITIES & COMBAT ROLE
+Their vision/element and combat capabilities (2-3 sentences)
+
+
+RELATIONSHIPS
+Important connections with other characters (2-3 sentences)
+
+
+Keep each section concise and ensure there are blank lines between sections.`,
                 },
               ],
             },

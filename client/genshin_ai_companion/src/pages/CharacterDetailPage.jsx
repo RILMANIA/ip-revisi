@@ -146,14 +146,18 @@ export default function CharacterDetailPage() {
             {showExplanation && explanations[name] && (
               <div style={styles.aiResult}>
                 <h3 style={styles.aiResultTitle}>AI Explanation</h3>
-                <p style={styles.text}>{explanations[name]}</p>
+                <p style={{ ...styles.text, whiteSpace: "pre-wrap" }}>
+                  {explanations[name]}
+                </p>
               </div>
             )}
 
             {showRecommendation && recommendations[name] && (
               <div style={styles.aiResult}>
                 <h3 style={styles.aiResultTitle}>Build Recommendation</h3>
-                <p style={styles.text}>{recommendations[name]}</p>
+                <p style={{ ...styles.text, whiteSpace: "pre-wrap" }}>
+                  {recommendations[name]}
+                </p>
               </div>
             )}
           </div>

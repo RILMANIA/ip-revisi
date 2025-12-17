@@ -3,6 +3,7 @@ import { deleteBuild } from "../store/slices/buildsSlice";
 
 export default function BuildCard({ build, showActions = true }) {
   const dispatch = useDispatch();
+  const GENSHIN_API = import.meta.env.VITE_GENSHIN_API_URL;
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this build?")) {
@@ -16,12 +17,23 @@ export default function BuildCard({ build, showActions = true }) {
 
   return (
     <div style={styles.card}>
-      <div style={styles.header}>
-        <h3 style={styles.title}>{build.character_name}</h3>
-        {build.isPublic && <span style={styles.badge}>Public</span>}
+      <div style={styles.cardHeader}>
+        <img
+          src={`${GENSHIN_API}/characters/${build.character_name}/icon`}
+          alt={build.character_name}
+          style={styles.characterImage}
+          onError={(e) => {
+            e.target.src = "https://via.placeholder.com/100?text=Character";
+          }}
+        />
+        <div style={styles.headerContent}>
+          <div style={styles.header}>
+            <h3 style={styles.title}>{build.character_name}</h3>
+            {build.isPublic && <span style={styles.badge}>Public</span>}
+          </div>
+          {build.User && <p style={styles.author}>By: {build.User.name}</p>}
+        </div>
       </div>
-
-      {build.User && <p style={styles.author}>By: {build.User.name}</p>}
 
       <div style={styles.content}>
         <div style={styles.section}>
@@ -60,11 +72,27 @@ const styles = {
     padding: "1.5rem",
     marginBottom: "1rem",
   },
+  cardHeader: {
+    display: "flex",
+    gap: "1rem",
+    alignItems: "flex-start",
+    marginBottom: "1rem",
+  },
+  characterImage: {
+    width: "100px",
+    height: "100px",
+    borderRadius: "8px",
+    objectFit: "cover",
+    border: "2px solid #f39c12",
+  },
+  headerContent: {
+    flex: 1,
+  },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "1rem",
+    marginBottom: "0.5rem",
   },
   title: {
     color: "#f39c12",
@@ -81,7 +109,7 @@ const styles = {
   author: {
     color: "#95a5a6",
     fontSize: "0.875rem",
-    marginBottom: "1rem",
+    margin: 0,
   },
   content: {
     color: "#ecf0f1",
