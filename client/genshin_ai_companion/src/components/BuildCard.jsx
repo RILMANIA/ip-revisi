@@ -1,7 +1,12 @@
 import { useDispatch } from "react-redux";
 import { deleteBuild } from "../store/slices/buildsSlice";
 
-export default function BuildCard({ build, showActions = true, index = 0, onEdit }) {
+export default function BuildCard({
+  build,
+  showActions = true,
+  index = 0,
+  onEdit,
+}) {
   const dispatch = useDispatch();
   const GENSHIN_API = import.meta.env.VITE_GENSHIN_API_URL;
 
