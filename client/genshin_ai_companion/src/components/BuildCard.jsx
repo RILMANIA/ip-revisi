@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { deleteBuild } from "../store/slices/buildsSlice";
 
-export default function BuildCard({ build, showActions = true, index = 0 }) {
+export default function BuildCard({ build, showActions = true, index = 0, onEdit }) {
   const dispatch = useDispatch();
   const GENSHIN_API = import.meta.env.VITE_GENSHIN_API_URL;
 
@@ -15,6 +15,12 @@ export default function BuildCard({ build, showActions = true, index = 0 }) {
       } catch (error) {
         alert(error);
       }
+    }
+  };
+
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(build);
     }
   };
 
@@ -67,6 +73,9 @@ export default function BuildCard({ build, showActions = true, index = 0 }) {
 
         {showActions && (
           <div style={styles.actions}>
+            <button onClick={handleEdit} style={styles.editButton}>
+              ✏️ Edit Build
+            </button>
             <button onClick={handleDelete} style={styles.deleteButton}>
               🗑️ Delete Build
             </button>
@@ -199,6 +208,21 @@ const styles = {
     marginTop: "2rem",
     paddingTop: "1.5rem",
     borderTop: "2px solid rgba(102, 126, 234, 0.2)",
+    display: "flex",
+    gap: "1rem",
+    flexWrap: "wrap",
+  },
+  editButton: {
+    backgroundColor: "#667eea",
+    color: "white",
+    border: "none",
+    padding: "0.9rem 2rem",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "600",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
   },
   deleteButton: {
     backgroundColor: "#e74c3c",

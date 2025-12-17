@@ -11,6 +11,7 @@ export const fetchCharacters = createAsyncThunk(
       const response = await axios.get(`${GENSHIN_API}/characters`);
       return response.data;
     } catch (error) {
+      console.log(error);
       return rejectWithValue("Failed to fetch characters");
     }
   }
@@ -25,6 +26,7 @@ export const fetchCharacterDetail = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
+      console.log(error);
       return rejectWithValue("Failed to fetch character details");
     }
   }

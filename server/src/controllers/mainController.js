@@ -73,13 +73,14 @@ class mainController {
   static async addBuild(req, res) {
     try {
       const user = req.user; // assuming user info is attached to req in authentication middleware
-      const { character_name, weapon, artifact, notes } = req.body;
+      const { character_name, weapon, artifact, notes, isPublic } = req.body;
       const newBuild = await Build.create({
         UserId: user.id,
         character_name,
         weapon,
         artifact,
         notes,
+        isPublic: isPublic || false,
       });
       res.status(201).json(newBuild);
     } catch (error) {
@@ -107,7 +108,7 @@ class mainController {
     try {
       const user = req.user;
       const buildId = req.params.id;
-      const { character_name, weapon, artifact, notes } = req.body;
+      const { character_name, weapon, artifact, notes, isPublic } = req.body;
 
       await Build.update(
         {
@@ -115,6 +116,7 @@ class mainController {
           weapon,
           artifact,
           notes,
+          isPublic: isPublic !== undefined ? isPublic : false,
         },
         {
           where: { id: buildId, UserId: user.id },
