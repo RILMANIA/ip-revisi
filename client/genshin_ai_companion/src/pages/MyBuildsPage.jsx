@@ -43,7 +43,12 @@ export default function MyBuildsPage() {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>My Builds</h1>
-        <button onClick={() => editingBuild ? handleCancelEdit() : setShowForm(!showForm)} style={styles.addButton}>
+        <button
+          onClick={() =>
+            editingBuild ? handleCancelEdit() : setShowForm(!showForm)
+          }
+          style={styles.addButton}
+        >
           {showForm ? "Cancel" : "+ Create New Build"}
         </button>
       </div>
