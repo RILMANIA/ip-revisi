@@ -21,6 +21,7 @@ export default function RegisterPage() {
       navigate("/login");
     } catch (err) {
       // Error is already in Redux state
+      console.error("Registration failed:", err);
     }
   };
 

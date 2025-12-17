@@ -22,6 +22,7 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       // Error is already in Redux state
+      console.error("Login failed:", err);
     }
   };
 
@@ -31,6 +32,7 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       // Error is already in Redux state
+      console.error("Google login failed:", err);
     }
   };
 

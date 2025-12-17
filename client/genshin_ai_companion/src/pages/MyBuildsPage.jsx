@@ -8,6 +8,7 @@ export default function MyBuildsPage() {
   const dispatch = useDispatch();
   const { myBuilds, loading, error } = useSelector((state) => state.builds);
   const [showForm, setShowForm] = useState(false);
+  const [editingBuild, setEditingBuild] = useState(null);
 
   useEffect(() => {
     dispatch(fetchMyBuilds());
@@ -15,7 +16,19 @@ export default function MyBuildsPage() {
 
   const handleSuccess = () => {
     setShowForm(false);
+    setEditingBuild(null);
     dispatch(fetchMyBuilds());
+  };
+
+  const handleEdit = (build) => {
+    setEditingBuild(build);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleCancelEdit = () => {
+    setShowForm(false);
+    setEditingBuild(null);
   };
 
   if (loading && myBuilds.length === 0) {
@@ -30,7 +43,7 @@ export default function MyBuildsPage() {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>My Builds</h1>
-        <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
+        <button onClick={() => editingBuild ? handleCancelEdit() : setShowForm(!showForm)} style={styles.addButton}>
           {showForm ? "Cancel" : "+ Create New Build"}
         </button>
       </div>
@@ -39,7 +52,10 @@ export default function MyBuildsPage() {
 
       {showForm && (
         <div style={styles.formContainer}>
-          <BuildForm onSuccess={handleSuccess} />
+          <h2 style={styles.formTitle}>
+            {editingBuild ? "✏️ Edit Build" : "➕ Create New Build"}
+          </h2>
+          <BuildForm existingBuild={editingBuild} onSuccess={handleSuccess} />
         </div>
       )}
 
@@ -55,6 +71,7 @@ export default function MyBuildsPage() {
               build={build}
               showActions={true}
               index={index}
+              onEdit={handleEdit}
             />
           ))}
         </div>
@@ -98,6 +115,14 @@ const styles = {
   formContainer: {
     maxWidth: "1200px",
     margin: "0 auto 3rem",
+  },
+  formTitle: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: "2rem",
+    fontWeight: "700",
+    marginBottom: "2rem",
+    textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
   },
   buildsContainer: {
     maxWidth: "1200px",
