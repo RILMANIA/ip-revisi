@@ -9,8 +9,6 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  const hasValidGoogleClientId = googleClientId && googleClientId !== 'your-google-client-id-here' && googleClientId.includes('.apps.googleusercontent.com');
 
   const [formData, setFormData] = useState({
     email: "",
@@ -80,19 +78,16 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {hasValidGoogleClientId && (
-          <>
-            <div style={styles.divider}>OR</div>
-            <div style={styles.googleContainer}>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => {
-                  console.error("Google Login Failed");
-                }}
-              />
-            </div>
-          </>
-        )}
+        <div style={styles.divider}>OR</div>
+
+        <div style={styles.googleContainer}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              console.error("Google Login Failed");
+            }}
+          />
+        </div>
 
         <p style={styles.text}>
           Don't have an account?{" "}
@@ -108,80 +103,94 @@ export default function LoginPage() {
 const styles = {
   container: {
     minHeight: "calc(100vh - 80px)",
-    backgroundColor: "#1a1a2e",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     padding: "2rem",
   },
   card: {
-    backgroundColor: "#34495e",
-    padding: "2rem",
-    borderRadius: "8px",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    padding: "3rem",
+    borderRadius: "20px",
     width: "100%",
-    maxWidth: "400px",
+    maxWidth: "450px",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
+    backdropFilter: "blur(10px)",
   },
   title: {
-    color: "#f39c12",
+    color: "#2c3e50",
     textAlign: "center",
-    marginBottom: "1.5rem",
+    marginBottom: "2rem",
+    fontSize: "2rem",
+    fontWeight: "700",
   },
   error: {
     backgroundColor: "#e74c3c",
     color: "white",
-    padding: "0.75rem",
-    borderRadius: "4px",
-    marginBottom: "1rem",
+    padding: "1rem",
+    borderRadius: "10px",
+    marginBottom: "1.5rem",
+    fontSize: "0.95rem",
   },
   form: {
-    marginBottom: "1.5rem",
+    marginBottom: "2rem",
   },
   formGroup: {
-    marginBottom: "1rem",
+    marginBottom: "1.5rem",
   },
   label: {
     display: "block",
-    color: "#ecf0f1",
+    color: "#2c3e50",
     marginBottom: "0.5rem",
+    fontWeight: "600",
+    fontSize: "0.95rem",
   },
   input: {
     width: "100%",
-    padding: "0.75rem",
-    borderRadius: "4px",
-    border: "1px solid #7f8c8d",
-    backgroundColor: "#2c3e50",
-    color: "#ecf0f1",
+    padding: "0.9rem",
+    borderRadius: "10px",
+    border: "2px solid #e2e8f0",
+    backgroundColor: "#ffffff",
+    color: "#2c3e50",
     fontSize: "1rem",
+    transition: "border-color 0.3s",
   },
   button: {
     width: "100%",
-    backgroundColor: "#3498db",
+    backgroundColor: "#667eea",
     color: "white",
     border: "none",
-    padding: "0.75rem",
-    borderRadius: "4px",
+    padding: "1rem",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "1.05rem",
+    fontWeight: "600",
     marginTop: "1rem",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
   },
   divider: {
     textAlign: "center",
-    color: "#95a5a6",
-    margin: "1.5rem 0",
+    color: "#718096",
+    margin: "2rem 0",
     position: "relative",
+    fontSize: "0.9rem",
+    fontWeight: "500",
   },
   googleContainer: {
     display: "flex",
     justifyContent: "center",
-    marginBottom: "1.5rem",
+    marginBottom: "2rem",
   },
   text: {
-    color: "#ecf0f1",
+    color: "#4a5568",
     textAlign: "center",
     margin: 0,
+    fontSize: "0.95rem",
   },
   link: {
-    color: "#3498db",
+    color: "#667eea",
     textDecoration: "none",
+    fontWeight: "600",
   },
 };

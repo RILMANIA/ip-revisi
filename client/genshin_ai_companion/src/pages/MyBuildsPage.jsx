@@ -49,8 +49,13 @@ export default function MyBuildsPage() {
         </div>
       ) : (
         <div style={styles.buildsContainer}>
-          {myBuilds.map((build) => (
-            <BuildCard key={build.id} build={build} showActions={true} />
+          {myBuilds.map((build, index) => (
+            <BuildCard
+              key={build.id}
+              build={build}
+              showActions={true}
+              index={index}
+            />
           ))}
         </div>
       )}
@@ -61,56 +66,69 @@ export default function MyBuildsPage() {
 const styles = {
   container: {
     minHeight: "calc(100vh - 80px)",
-    backgroundColor: "#1a1a2e",
-    padding: "2rem",
+    padding: "3rem 2rem",
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    maxWidth: "1000px",
-    margin: "0 auto 2rem",
+    maxWidth: "1200px",
+    margin: "0 auto 3rem",
+    flexWrap: "wrap",
+    gap: "1rem",
   },
   title: {
-    color: "#f39c12",
-    fontSize: "2.5rem",
+    color: "#ffffff",
+    fontSize: "3rem",
+    fontWeight: "700",
+    textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
   },
   addButton: {
-    backgroundColor: "#27ae60",
+    backgroundColor: "#667eea",
     color: "white",
     border: "none",
-    padding: "0.75rem 1.5rem",
-    borderRadius: "4px",
+    padding: "1rem 2rem",
+    borderRadius: "12px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "1.05rem",
+    fontWeight: "600",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
   },
   formContainer: {
-    maxWidth: "1000px",
-    margin: "0 auto 2rem",
+    maxWidth: "1200px",
+    margin: "0 auto 3rem",
   },
   buildsContainer: {
-    maxWidth: "1000px",
+    maxWidth: "1200px",
     margin: "0 auto",
   },
   empty: {
     textAlign: "center",
-    color: "#ecf0f1",
-    fontSize: "1.2rem",
-    padding: "3rem",
+    color: "#ffffff",
+    fontSize: "1.3rem",
+    padding: "4rem",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: "16px",
+    maxWidth: "600px",
+    margin: "0 auto",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
   },
   loading: {
-    color: "#ecf0f1",
+    color: "#ffffff",
     textAlign: "center",
     fontSize: "1.5rem",
     padding: "3rem",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
   },
   error: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "rgba(231, 76, 60, 0.95)",
     color: "white",
-    padding: "1rem",
-    borderRadius: "4px",
+    padding: "1.5rem",
+    borderRadius: "12px",
     textAlign: "center",
-    maxWidth: "1000px",
-    margin: "0 auto 2rem",
+    maxWidth: "1200px",
+    margin: "0 auto 3rem",
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
   },
 };

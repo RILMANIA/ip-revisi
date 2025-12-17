@@ -61,9 +61,10 @@ export default function Navbar() {
 
 const styles = {
   nav: {
-    backgroundColor: "#2c3e50",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
     padding: "1rem 0",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    backdropFilter: "blur(10px)",
   },
   container: {
     maxWidth: "1200px",
@@ -74,7 +75,7 @@ const styles = {
     alignItems: "center",
   },
   logo: {
-    color: "#f39c12",
+    color: "#667eea",
     fontSize: "1.5rem",
     fontWeight: "bold",
     textDecoration: "none",
@@ -85,16 +86,17 @@ const styles = {
     alignItems: "center",
   },
   link: {
-    color: "#ecf0f1",
+    color: "#2c3e50",
     textDecoration: "none",
     transition: "color 0.3s",
-  },
-  username: {
-    color: "#3498db",
     fontWeight: "500",
   },
+  username: {
+    color: "#667eea",
+    fontWeight: "600",
+  },
   button: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "#667eea",
     color: "white",
     border: "none",
     padding: "0.5rem 1rem",

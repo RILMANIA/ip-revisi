@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createBuild, updateBuild } from "../store/slices/buildsSlice";
+import axios from "axios";
 
 export default function BuildForm({ existingBuild, onSuccess }) {
   const dispatch = useDispatch();
+  const [artifacts, setArtifacts] = useState([]);
+  const [weapons, setWeapons] = useState([]);
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     character_name: existingBuild?.character_name || "",
     weapon: existingBuild?.weapon || "",
-    artifacts: existingBuild?.artifacts || "",
-    tips: existingBuild?.tips || "",
+    artifact: existingBuild?.artifact || "",
+    notes: existingBuild?.notes || "",
     isPublic: existingBuild?.isPublic || false,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [artifactsRes, weaponsRes, charactersRes] = await Promise.all([
+          axios.get("https://genshin.jmp.blue/artifacts"),
+          axios.get("https://genshin.jmp.blue/weapons"),
+          axios.get("https://genshin.jmp.blue/characters"),
+        ]);
+        setArtifacts(artifactsRes.data);
+        setWeapons(weaponsRes.data);
+        setCharacters(charactersRes.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,44 +66,78 @@ export default function BuildForm({ existingBuild, onSuccess }) {
     <form onSubmit={handleSubmit} style={styles.form}>
       <div style={styles.formGroup}>
         <label style={styles.label}>Character Name:</label>
-        <input
-          type="text"
+        <select
           name="character_name"
           value={formData.character_name}
           onChange={handleChange}
           required
           style={styles.input}
-        />
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading characters..." : "Select a character"}
+          </option>
+          {characters.map((character) => (
+            <option key={character} value={character}>
+              {character
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
         <label style={styles.label}>Weapon:</label>
-        <input
-          type="text"
+        <select
           name="weapon"
           value={formData.weapon}
           onChange={handleChange}
           required
           style={styles.input}
-        />
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading weapons..." : "Select a weapon"}
+          </option>
+          {weapons.map((weapon) => (
+            <option key={weapon} value={weapon}>
+              {weapon
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
         <label style={styles.label}>Artifacts:</label>
-        <textarea
-          name="artifacts"
-          value={formData.artifacts}
+        <select
+          name="artifact"
+          value={formData.artifact}
           onChange={handleChange}
           required
-          style={styles.textarea}
-        />
+          style={styles.input}
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading artifacts..." : "Select an artifact set"}
+          </option>
+          {artifacts.map((artifact) => (
+            <option key={artifact} value={artifact}>
+              {artifact
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
-        <label style={styles.label}>Tips:</label>
+        <label style={styles.label}>Notes:</label>
         <textarea
-          name="tips"
-          value={formData.tips}
+          name="notes"
+          value={formData.notes}
           onChange={handleChange}
           style={styles.textarea}
         />
@@ -106,62 +165,74 @@ export default function BuildForm({ existingBuild, onSuccess }) {
 
 const styles = {
   form: {
-    backgroundColor: "#34495e",
-    padding: "2rem",
-    borderRadius: "8px",
-    maxWidth: "600px",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    padding: "2.5rem",
+    borderRadius: "20px",
+    maxWidth: "700px",
     margin: "0 auto",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+    backdropFilter: "blur(10px)",
   },
   formGroup: {
-    marginBottom: "1.5rem",
+    marginBottom: "1.75rem",
   },
   label: {
     display: "block",
-    color: "#ecf0f1",
+    color: "#2c3e50",
     marginBottom: "0.5rem",
-    fontWeight: "500",
+    fontWeight: "600",
+    fontSize: "1rem",
   },
   input: {
     width: "100%",
-    padding: "0.75rem",
-    borderRadius: "4px",
-    border: "1px solid #7f8c8d",
-    backgroundColor: "#2c3e50",
-    color: "#ecf0f1",
+    padding: "0.9rem",
+    borderRadius: "10px",
+    border: "2px solid #e2e8f0",
+    backgroundColor: "#ffffff",
+    color: "#2c3e50",
     fontSize: "1rem",
+    transition: "border-color 0.3s",
   },
   textarea: {
     width: "100%",
-    padding: "0.75rem",
-    borderRadius: "4px",
-    border: "1px solid #7f8c8d",
-    backgroundColor: "#2c3e50",
-    color: "#ecf0f1",
+    padding: "0.9rem",
+    borderRadius: "10px",
+    border: "2px solid #e2e8f0",
+    backgroundColor: "#ffffff",
+    color: "#2c3e50",
     fontSize: "1rem",
-    minHeight: "100px",
+    minHeight: "120px",
     resize: "vertical",
+    transition: "border-color 0.3s",
+    fontFamily: "inherit",
   },
   checkboxGroup: {
-    marginBottom: "1.5rem",
+    marginBottom: "1.75rem",
   },
   checkboxLabel: {
-    color: "#ecf0f1",
+    color: "#2c3e50",
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
+    gap: "0.75rem",
+    fontSize: "1rem",
+    fontWeight: "500",
   },
   checkbox: {
-    width: "20px",
-    height: "20px",
+    width: "22px",
+    height: "22px",
+    cursor: "pointer",
   },
   button: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#667eea",
     color: "white",
     border: "none",
-    padding: "0.75rem 2rem",
-    borderRadius: "4px",
+    padding: "1rem 2rem",
+    borderRadius: "12px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "1.05rem",
+    fontWeight: "600",
     width: "100%",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
   },
 };

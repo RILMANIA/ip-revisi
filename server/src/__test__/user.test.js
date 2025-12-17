@@ -61,24 +61,14 @@ describe("POST /login", () => {
   test("200 - success login returns access_token", async () => {
     const res = await request(app)
       .post("/login")
-      .send({ name: "LoginUser", email: "login@mail.com", password: "secret" });
+      .send({ email: "login@mail.com", password: "secret" });
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("access_token", expect.any(String));
   });
 
-  test("400 - missing name", async () => {
-    const res = await request(app)
-      .post("/login")
-      .send({ email: "login@mail.com", password: "secret" });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: "Name is required" });
-  });
-
   test("400 - missing email", async () => {
-    const res = await request(app)
-      .post("/login")
-      .send({ name: "LoginUser", password: "secret" });
+    const res = await request(app).post("/login").send({ password: "secret" });
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: "Email is required" });
   });
@@ -86,7 +76,7 @@ describe("POST /login", () => {
   test("400 - missing password", async () => {
     const res = await request(app)
       .post("/login")
-      .send({ name: "LoginUser", email: "login@mail.com" });
+      .send({ email: "login@mail.com" });
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: "Password is required" });
   });
@@ -94,7 +84,7 @@ describe("POST /login", () => {
   test("401 - invalid email/password when email not found", async () => {
     const res = await request(app)
       .post("/login")
-      .send({ name: "X", email: "notfound@mail.com", password: "secret" });
+      .send({ email: "notfound@mail.com", password: "secret" });
     expect(res.status).toBe(401);
     expect(res.body).toEqual({ message: "Invalid email/password" });
   });
@@ -102,7 +92,7 @@ describe("POST /login", () => {
   test("401 - invalid email/password when wrong password", async () => {
     const res = await request(app)
       .post("/login")
-      .send({ name: "LoginUser", email: "login@mail.com", password: "wrong" });
+      .send({ email: "login@mail.com", password: "wrong" });
     expect(res.status).toBe(401);
     expect(res.body).toEqual({ message: "Invalid email/password" });
   });
@@ -113,7 +103,7 @@ describe("POST /login", () => {
       .mockRejectedValueOnce(new Error("db down"));
     const res = await request(app)
       .post("/login")
-      .send({ name: "LoginUser", email: "login@mail.com", password: "secret" });
+      .send({ email: "login@mail.com", password: "secret" });
     expect(res.status).toBe(500);
     expect(res.body).toEqual({ message: "Internal server error" });
     spy.mockRestore();
