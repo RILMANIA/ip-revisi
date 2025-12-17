@@ -37,8 +37,13 @@ export default function PublicBuildsPage() {
         </div>
       ) : (
         <div style={styles.buildsContainer}>
-          {publicBuilds.map((build) => (
-            <BuildCard key={build.id} build={build} showActions={false} />
+          {publicBuilds.map((build, index) => (
+            <BuildCard
+              key={build.id}
+              build={build}
+              showActions={false}
+              index={index}
+            />
           ))}
         </div>
       )}

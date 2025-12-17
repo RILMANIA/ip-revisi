@@ -49,8 +49,13 @@ export default function MyBuildsPage() {
         </div>
       ) : (
         <div style={styles.buildsContainer}>
-          {myBuilds.map((build) => (
-            <BuildCard key={build.id} build={build} showActions={true} />
+          {myBuilds.map((build, index) => (
+            <BuildCard
+              key={build.id}
+              build={build}
+              showActions={true}
+              index={index}
+            />
           ))}
         </div>
       )}

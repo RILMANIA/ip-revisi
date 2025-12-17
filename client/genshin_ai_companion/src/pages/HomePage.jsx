@@ -3,49 +3,73 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   return (
     <div style={styles.container}>
-      <div style={styles.hero}>
-        <h1 style={styles.title}>Welcome to Genshin AI Companion</h1>
-        <p style={styles.subtitle}>
-          Your ultimate tool for Genshin Impact character builds and AI-powered
-          insights
-        </p>
+      {/* Hero Section with Background Image */}
+      <div style={styles.heroSection}>
+        <div style={styles.heroContent}>
+          <h1 style={styles.heroTitle}>
+            GENSHIN
+            <br />
+            IMPACT
+          </h1>
+          <p style={styles.heroSubtitle}>
+            Step into Teyvat, a vast world teeming with life and flowing with
+            elemental energy
+          </p>
 
-        <div style={styles.features}>
-          <div style={styles.feature}>
-            <h3 style={styles.featureTitle}>🎮 Browse Characters</h3>
-            <p style={styles.featureText}>
-              Explore all Genshin Impact characters with detailed information
-            </p>
-          </div>
-
-          <div style={styles.feature}>
-            <h3 style={styles.featureTitle}>⭐ Save Favorites</h3>
-            <p style={styles.featureText}>
-              Keep track of your favorite characters for quick access
-            </p>
-          </div>
-
-          <div style={styles.feature}>
-            <h3 style={styles.featureTitle}>⚔️ Create Builds</h3>
-            <p style={styles.featureText}>
-              Design and share your optimal character builds with the community
-            </p>
-          </div>
-
-          <div style={styles.feature}>
-            <h3 style={styles.featureTitle}>🤖 AI Insights</h3>
-            <p style={styles.featureText}>
-              Get AI-powered explanations and build recommendations
-            </p>
+          <div style={styles.heroCTA}>
+            <Link to="/characters" style={styles.exploreCTA}>
+              Explore Characters
+            </Link>
           </div>
         </div>
 
-        <div style={styles.cta}>
-          <Link to="/characters" style={styles.ctaButton}>
-            Explore Characters
+        {/* Social Media Icons */}
+        <div style={styles.socialIcons}>
+          <a href="#" style={styles.socialIcon}>
+            📘
+          </a>
+          <a href="#" style={styles.socialIcon}>
+            💬
+          </a>
+          <a href="#" style={styles.socialIcon}>
+            🐦
+          </a>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div style={styles.featuresSection}>
+        <div style={styles.featuresGrid}>
+          <Link to="/characters" style={styles.featureCard}>
+            <div style={styles.featureIcon}>🎮</div>
+            <h3 style={styles.featureTitle}>Browse Characters</h3>
+            <p style={styles.featureText}>
+              Explore all Genshin Impact characters with detailed information
+            </p>
           </Link>
-          <Link to="/public-builds" style={styles.ctaButtonSecondary}>
-            View Public Builds
+
+          <Link to="/favorites" style={styles.featureCard}>
+            <div style={styles.featureIcon}>⭐</div>
+            <h3 style={styles.featureTitle}>Save Favorites</h3>
+            <p style={styles.featureText}>
+              Keep track of your favorite characters for quick access
+            </p>
+          </Link>
+
+          <Link to="/my-builds" style={styles.featureCard}>
+            <div style={styles.featureIcon}>⚔️</div>
+            <h3 style={styles.featureTitle}>Create Builds</h3>
+            <p style={styles.featureText}>
+              Design and share your optimal character builds
+            </p>
+          </Link>
+
+          <Link to="/public-builds" style={styles.featureCard}>
+            <div style={styles.featureIcon}>🤖</div>
+            <h3 style={styles.featureTitle}>AI Insights</h3>
+            <p style={styles.featureText}>
+              Get AI-powered explanations and recommendations
+            </p>
           </Link>
         </div>
       </div>
@@ -55,80 +79,126 @@ export default function HomePage() {
 
 const styles = {
   container: {
-    minHeight: "calc(100vh - 80px)",
-    padding: "3rem 2rem",
+    minHeight: "100vh",
+    width: "100%",
   },
-  hero: {
-    maxWidth: "1200px",
-    margin: "0 auto",
+  heroSection: {
+    minHeight: "100vh",
+    width: "100%",
+    background: "linear-gradient(135deg, #4a9fd8 0%, #89c9f5 100%)",
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    backgroundImage: 'url("/genshin-hero-bg.jpg")',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  },
+  heroContent: {
     textAlign: "center",
+    zIndex: 2,
+    maxWidth: "900px",
+    padding: "2rem",
   },
-  title: {
+  heroTitle: {
+    fontSize: "6rem",
+    fontWeight: "900",
     color: "#ffffff",
-    fontSize: "3.5rem",
-    fontWeight: "700",
-    marginBottom: "1rem",
-    textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+    marginBottom: "2rem",
+    textShadow: "4px 4px 8px rgba(0,0,0,0.5)",
+    letterSpacing: "8px",
+    lineHeight: "1.1",
   },
-  subtitle: {
-    color: "#ffffff",
+  heroSubtitle: {
     fontSize: "1.5rem",
+    color: "#ffffff",
     marginBottom: "3rem",
-    fontWeight: "300",
-    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+    textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+    fontWeight: "400",
+    maxWidth: "700px",
+    margin: "0 auto 3rem",
+    lineHeight: "1.6",
   },
-  features: {
+  heroCTA: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "1.5rem",
+  },
+  exploreCTA: {
+    backgroundColor: "#ffc107",
+    color: "#2c3e50",
+    padding: "1.2rem 3rem",
+    borderRadius: "8px",
+    textDecoration: "none",
+    fontSize: "1.2rem",
+    fontWeight: "700",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 16px rgba(255, 193, 7, 0.5)",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+  },
+  socialIcons: {
+    position: "absolute",
+    bottom: "3rem",
+    left: "3rem",
+    display: "flex",
+    gap: "1rem",
+    zIndex: 3,
+  },
+  socialIcon: {
+    width: "50px",
+    height: "50px",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: "8px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textDecoration: "none",
+    fontSize: "1.5rem",
+    transition: "all 0.3s",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+  },
+  featuresSection: {
+    padding: "5rem 2rem",
+    backgroundColor: "#f8f9fa",
+  },
+  featuresGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "2rem",
-    marginBottom: "3rem",
+    gap: "2.5rem",
+    maxWidth: "1400px",
+    margin: "0 auto",
   },
-  feature: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    padding: "2.5rem",
+  featureCard: {
+    backgroundColor: "white",
+    padding: "3rem 2rem",
     borderRadius: "16px",
-    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
-    transition: "transform 0.3s, box-shadow 0.3s",
-    backdropFilter: "blur(10px)",
+    textAlign: "center",
+    textDecoration: "none",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+    transition: "all 0.3s",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  featureIcon: {
+    fontSize: "3.5rem",
+    marginBottom: "1.5rem",
+    filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
   },
   featureTitle: {
-    color: "#667eea",
-    fontSize: "1.6rem",
+    color: "#2c3e50",
+    fontSize: "1.5rem",
     marginBottom: "1rem",
-    fontWeight: "600",
+    fontWeight: "700",
   },
   featureText: {
-    color: "#4a5568",
+    color: "#6c757d",
     fontSize: "1rem",
     lineHeight: "1.7",
-  },
-  cta: {
-    display: "flex",
-    gap: "1.5rem",
-    justifyContent: "center",
-    flexWrap: "wrap",
-  },
-  ctaButton: {
-    backgroundColor: "#667eea",
-    color: "white",
-    padding: "1.2rem 2.5rem",
-    borderRadius: "12px",
-    textDecoration: "none",
-    fontSize: "1.2rem",
-    fontWeight: "600",
-    transition: "all 0.3s",
-    boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
-  },
-  ctaButtonSecondary: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    color: "#667eea",
-    padding: "1.2rem 2.5rem",
-    borderRadius: "12px",
-    textDecoration: "none",
-    fontSize: "1.2rem",
-    fontWeight: "600",
-    transition: "all 0.3s",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    border: "2px solid #667eea",
+    margin: 0,
   },
 };
