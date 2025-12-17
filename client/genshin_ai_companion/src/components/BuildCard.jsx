@@ -21,7 +21,7 @@ export default function BuildCard({ build, showActions = true }) {
         {build.isPublic && <span style={styles.badge}>Public</span>}
       </div>
 
-      {build.User && <p style={styles.author}>By: {build.User.username}</p>}
+      {build.User && <p style={styles.author}>By: {build.User.name}</p>}
 
       <div style={styles.content}>
         <div style={styles.section}>
@@ -31,13 +31,13 @@ export default function BuildCard({ build, showActions = true }) {
 
         <div style={styles.section}>
           <strong style={styles.label}>Artifacts:</strong>
-          <p style={styles.text}>{build.artifacts}</p>
+          <p style={styles.text}>{build.artifact}</p>
         </div>
 
-        {build.tips && (
+        {build.notes && (
           <div style={styles.section}>
-            <strong style={styles.label}>Tips:</strong>
-            <p style={styles.text}>{build.tips}</p>
+            <strong style={styles.label}>Notes:</strong>
+            <p style={styles.text}>{build.notes}</p>
           </div>
         )}
       </div>

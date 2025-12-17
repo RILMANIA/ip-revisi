@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createBuild, updateBuild } from "../store/slices/buildsSlice";
+import axios from "axios";
 
 export default function BuildForm({ existingBuild, onSuccess }) {
   const dispatch = useDispatch();
+  const [artifacts, setArtifacts] = useState([]);
+  const [weapons, setWeapons] = useState([]);
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     character_name: existingBuild?.character_name || "",
     weapon: existingBuild?.weapon || "",
-    artifacts: existingBuild?.artifacts || "",
-    tips: existingBuild?.tips || "",
+    artifact: existingBuild?.artifact || "",
+    notes: existingBuild?.notes || "",
     isPublic: existingBuild?.isPublic || false,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [artifactsRes, weaponsRes, charactersRes] = await Promise.all([
+          axios.get("https://genshin.jmp.blue/artifacts"),
+          axios.get("https://genshin.jmp.blue/weapons"),
+          axios.get("https://genshin.jmp.blue/characters"),
+        ]);
+        setArtifacts(artifactsRes.data);
+        setWeapons(weaponsRes.data);
+        setCharacters(charactersRes.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,44 +66,78 @@ export default function BuildForm({ existingBuild, onSuccess }) {
     <form onSubmit={handleSubmit} style={styles.form}>
       <div style={styles.formGroup}>
         <label style={styles.label}>Character Name:</label>
-        <input
-          type="text"
+        <select
           name="character_name"
           value={formData.character_name}
           onChange={handleChange}
           required
           style={styles.input}
-        />
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading characters..." : "Select a character"}
+          </option>
+          {characters.map((character) => (
+            <option key={character} value={character}>
+              {character
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
         <label style={styles.label}>Weapon:</label>
-        <input
-          type="text"
+        <select
           name="weapon"
           value={formData.weapon}
           onChange={handleChange}
           required
           style={styles.input}
-        />
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading weapons..." : "Select a weapon"}
+          </option>
+          {weapons.map((weapon) => (
+            <option key={weapon} value={weapon}>
+              {weapon
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
         <label style={styles.label}>Artifacts:</label>
-        <textarea
-          name="artifacts"
-          value={formData.artifacts}
+        <select
+          name="artifact"
+          value={formData.artifact}
           onChange={handleChange}
           required
-          style={styles.textarea}
-        />
+          style={styles.input}
+          disabled={loading}
+        >
+          <option value="">
+            {loading ? "Loading artifacts..." : "Select an artifact set"}
+          </option>
+          {artifacts.map((artifact) => (
+            <option key={artifact} value={artifact}>
+              {artifact
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div style={styles.formGroup}>
-        <label style={styles.label}>Tips:</label>
+        <label style={styles.label}>Notes:</label>
         <textarea
-          name="tips"
-          value={formData.tips}
+          name="notes"
+          value={formData.notes}
           onChange={handleChange}
           style={styles.textarea}
         />

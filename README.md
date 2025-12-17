@@ -12,7 +12,7 @@
 
 **Genshin AI Companion** is a game companion web application designed to help Genshin Impact players explore characters, understand lore, and receive AI-powered build recommendations.
 
-The application integrates **OpenAI GPT API** for intelligent explanations and recommendations, and the **Genshin Impact API** as a source of game data. The system is built using **client–server architecture** with a modern frontend and a RESTful backend.
+The application integrates **Google Gemini API** for intelligent explanations and recommendations, and the **Genshin Impact API** as a source of game data. The system is built using **client–server architecture** with a modern frontend and a RESTful backend.
 
 ---
 
@@ -54,7 +54,7 @@ Game – Genshin Impact
 
 ### Third-Party APIs
 
-- **OpenAI GPT API**
+- **Google Gemini API**
 - **Genshin Impact API** ([https://genshin.dev/])
 - Google OAuth
 
@@ -78,7 +78,7 @@ Client (React + Redux)
    ↓
 REST API Server (Express)
    ↓
-OpenAI API / Genshin Impact API
+Gemini API / Genshin Impact API
 ```
 
 ---
@@ -166,7 +166,7 @@ PORT=
 DATABASE_URL=
 JWT_SECRET=
 GOOGLE_CLIENT_ID=
-OPENAI_API_KEY=
+GEMINI_API_KEY=
 ```
 
 ---
@@ -274,11 +274,11 @@ This project demonstrates the integration of AI technology into a game-based web
 
 ---
 
-“This project applies AI-powered personalization using OpenAI GPT API and external game data through a RESTful client–server architecture, with comprehensive testing and deployment.”
+"This project applies AI-powered personalization using Google Gemini API and external game data through a RESTful client–server architecture, with comprehensive testing and deployment."
 
 ---
 
-I am making a game project with genshin impact as a theme. This project applies AI-powered personalization using OpenAI GPT API (link: https://openai.com/api/) and external game data through a RESTful client–server architecture. The game data is extracted from a 3rd party API (link: https://genshin.jmp.blue/).
+I am making a game project with genshin impact as a theme. This project applies AI-powered personalization using Google Gemini API (link: https://ai.google.dev/gemini-api/docs) and external game data through a RESTful client–server architecture. The game data is extracted from a 3rd party API (link: https://genshin.jmp.blue/).
 
 In this project:
 
