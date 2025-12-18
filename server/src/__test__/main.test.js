@@ -304,3 +304,55 @@ describe("Controller error paths", () => {
     spy.mockRestore();
   });
 });
+
+describe("Public builds endpoint", () => {
+  test("200 - GET /public/builds without authentication", async () => {
+    // Create a public build
+    await Build.create({
+      UserId: userA.id,
+      character_name: "Diluc",
+      weapon: "Wolf's Gravestone",
+      artifact: "Crimson Witch",
+      notes: "DPS build",
+      isPublic: true,
+    });
+
+    const res = await request(app).get("/public/builds");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body[0]).toHaveProperty("character_name");
+    expect(res.body[0]).toHaveProperty("isPublic", true);
+  });
+
+  test("200 - GET /public/builds returns only public builds", async () => {
+    // Create a private build
+    await Build.create({
+      UserId: userA.id,
+      character_name: "Private Character",
+      weapon: "Private Weapon",
+      artifact: "Private Artifact",
+      notes: "Private notes",
+      isPublic: false,
+    });
+
+    const res = await request(app).get("/public/builds");
+
+    expect(res.status).toBe(200);
+    // Check that all returned builds are public
+    res.body.forEach((build) => {
+      expect(build.isPublic).toBe(true);
+    });
+  });
+});
+
+describe("DELETE /builds/:id not found", () => {
+  test("404 - delete non-existent build", async () => {
+    const res = await request(app)
+      .delete(`/builds/99999`)
+      .set("Authorization", `Bearer ${tokenA}`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ message: "Data not found" });
+  });
+});

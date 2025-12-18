@@ -14,7 +14,11 @@ const { guardFavorite, guardBuild } = require("./middlewares/guardOwner");
 
 app.use(
   cors({
-    origin: "https://genshin-ai-companion-1e1d4.web.app",
+    origin: [
+      "https://genshin-ai-companion-1e1d4.web.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
   })
 );
 app.use(express.urlencoded({ extended: false }));

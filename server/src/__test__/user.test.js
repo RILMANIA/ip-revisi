@@ -10,6 +10,14 @@ afterAll(async () => {
   await sequelize.close();
 });
 
+describe("GET /", () => {
+  test("302 - redirects to /login", async () => {
+    const res = await request(app).get("/");
+    expect(res.status).toBe(302);
+    expect(res.header.location).toBe("/login");
+  });
+});
+
 describe("POST /register", () => {
   test("201 - success register returns name, email, message", async () => {
     const res = await request(app)
