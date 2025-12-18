@@ -12,7 +12,14 @@ const port = process.env.PORT || 3000;
 const authentication = require("./middlewares/authentication");
 const { guardFavorite, guardBuild } = require("./middlewares/guardOwner");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://genshin-ai-companion-1e1d4.web.app",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
