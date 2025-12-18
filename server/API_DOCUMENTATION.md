@@ -31,6 +31,8 @@ This API provides backend services for the Genshin AI Companion application, all
 
 ```
 http://localhost:3000
+
+Database local: postgres://postgres:postgres@localhost:5432/genshin_ai_companion
 ```
 
 ---
