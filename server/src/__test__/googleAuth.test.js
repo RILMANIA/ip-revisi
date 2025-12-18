@@ -1,9 +1,18 @@
 const request = require("supertest");
-const app = require("../app");
 const { sequelize, User } = require("../models");
-const { OAuth2Client } = require("google-auth-library");
 
-jest.mock("google-auth-library");
+// Mock google-auth-library before requiring app
+const mockVerifyIdToken = jest.fn();
+jest.mock("google-auth-library", () => {
+  return {
+    OAuth2Client: jest.fn().mockImplementation(() => ({
+      verifyIdToken: mockVerifyIdToken,
+    })),
+  };
+});
+
+// Now require app after mock is set up
+const app = require("../app");
 
 beforeAll(async () => {
   await sequelize.sync({ force: true });
@@ -11,6 +20,11 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await sequelize.close();
+});
+
+beforeEach(() => {
+  // Reset mock before each test
+  mockVerifyIdToken.mockReset();
 });
 
 describe("POST /google-login", () => {
@@ -23,14 +37,12 @@ describe("POST /google-login", () => {
     });
 
     // Mock Google OAuth verification
-    const mockVerifyIdToken = jest.fn().mockResolvedValue({
+    mockVerifyIdToken.mockResolvedValue({
       getPayload: () => ({
         email: "existing@gmail.com",
         name: "Existing User",
       }),
     });
-
-    OAuth2Client.prototype.verifyIdToken = mockVerifyIdToken;
 
     const res = await request(app)
       .post("/google-login")
@@ -47,14 +59,12 @@ describe("POST /google-login", () => {
 
   test("200 - successful Google login with new user", async () => {
     // Mock Google OAuth verification for new user
-    const mockVerifyIdToken = jest.fn().mockResolvedValue({
+    mockVerifyIdToken.mockResolvedValue({
       getPayload: () => ({
         email: "newuser@gmail.com",
         name: "New User",
       }),
     });
-
-    OAuth2Client.prototype.verifyIdToken = mockVerifyIdToken;
 
     const res = await request(app)
       .post("/google-login")
@@ -85,11 +95,7 @@ describe("POST /google-login", () => {
 
   test("500 - invalid Google token", async () => {
     // Mock Google OAuth verification failure
-    const mockVerifyIdToken = jest
-      .fn()
-      .mockRejectedValue(new Error("Invalid token"));
-
-    OAuth2Client.prototype.verifyIdToken = mockVerifyIdToken;
+    mockVerifyIdToken.mockRejectedValue(new Error("Invalid token"));
 
     const res = await request(app)
       .post("/google-login")
@@ -101,11 +107,7 @@ describe("POST /google-login", () => {
 
   test("500 - Google OAuth service error", async () => {
     // Mock network error
-    const mockVerifyIdToken = jest
-      .fn()
-      .mockRejectedValue(new Error("Network timeout"));
-
-    OAuth2Client.prototype.verifyIdToken = mockVerifyIdToken;
+    mockVerifyIdToken.mockRejectedValue(new Error("Network timeout"));
 
     const res = await request(app)
       .post("/google-login")
@@ -115,20 +117,19 @@ describe("POST /google-login", () => {
     expect(res.body.message).toBe("Internal server error");
   });
 
-  test("500 - database error during user creation", async () => {
+  test("500 - database error during user lookup", async () => {
     // Mock successful Google verification
-    const mockVerifyIdToken = jest.fn().mockResolvedValue({
+    mockVerifyIdToken.mockResolvedValue({
       getPayload: () => ({
         email: "dbtest@gmail.com",
         name: "DB Test User",
       }),
     });
 
-    OAuth2Client.prototype.verifyIdToken = mockVerifyIdToken;
-
-    // Mock User.create to throw error
-    const originalCreate = User.create;
-    User.create = jest.fn().mockRejectedValue(new Error("Database error"));
+    // Mock User.findOne to throw error
+    const spy = jest
+      .spyOn(User, "findOne")
+      .mockRejectedValue(new Error("Database error"));
 
     const res = await request(app)
       .post("/google-login")
@@ -138,6 +139,6 @@ describe("POST /google-login", () => {
     expect(res.body.message).toBe("Internal server error");
 
     // Restore original method
-    User.create = originalCreate;
+    spy.mockRestore();
   });
 });

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.21% </span>
+                <span class="strong">75.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/66</span>
+                <span class='fraction'>50/66</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.21% </span>
+                <span class="strong">75.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>47/66</span>
+                <span class='fraction'>50/66</span>
             </div>
         
             
@@ -233,7 +233,9 @@
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
 <a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -316,6 +318,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -356,6 +359,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -384,8 +388,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -394,7 +398,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -478,13 +482,14 @@ class mainController {
   static async addBuild(req, res) {
     try {
       const user = req.user; // assuming user info is attached to req in authentication middleware
-      const { character_name, weapon, artifact, notes } = req.body;
+      const { character_name, weapon, artifact, notes, isPublic } = req.body;
       const newBuild = await Build.create({
         UserId: user.id,
         character_name,
         weapon,
         artifact,
         notes,
+        isPublic: isPublic || false,
       });
       res.status(201).json(newBuild);
     } catch (error) {
@@ -512,7 +517,7 @@ class mainController {
     try {
       const user = req.user;
       const buildId = req.params.id;
-      const { character_name, weapon, artifact, notes } = req.body;
+      const { character_name, weapon, artifact, notes, isPublic } = req.body;
 &nbsp;
       await Build.update(
         {
@@ -520,6 +525,7 @@ class mainController {
           weapon,
           artifact,
           notes,
+          isPublic: isPublic !== undefined ? <span class="branch-0 cbranch-no" title="branch not covered" >isPublic </span>: false,
         },
         {
           where: { id: buildId, UserId: user.id },
@@ -553,9 +559,9 @@ class mainController {
   }
 &nbsp;
   // get public builds
-<span class="fstat-no" title="function not covered" >  st</span>atic async getPublicBuilds(req, res) {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const builds = <span class="cstat-no" title="statement not covered" >await Build.findAll({</span>
+  static async getPublicBuilds(req, res) {
+    try {
+      const builds = await Build.findAll({
         where: { isPublic: true },
         include: [
           {
@@ -564,7 +570,7 @@ class mainController {
           },
         ],
       });
-<span class="cstat-no" title="statement not covered" >      res.status(200).json(builds);</span>
+      res.status(200).json(builds);
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.log(error, "&lt;&lt;&lt;&lt; error getPublicBuilds mainController");</span>
 <span class="cstat-no" title="statement not covered" >      res.status(500).json({ message: "Internal Server Error" });</span>
@@ -580,7 +586,7 @@ module.exports = mainController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-17T06:52:15.402Z
+                at 2025-12-18T08:46:20.593Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

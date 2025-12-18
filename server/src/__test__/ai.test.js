@@ -106,11 +106,28 @@ describe("POST /ai/explain", () => {
     expect(res.body.message).toContain("Received unexpected response");
   });
 
-  test("503 - invalid API key or model not available", async () => {
+  test("503 - invalid API key or model not available (400)", async () => {
     axios.post.mockRejectedValue({
       response: {
         status: 400,
         data: { error: "API key invalid" },
+      },
+    });
+
+    const res = await request(app)
+      .post("/ai/explain")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ characterName: "Diluc" });
+
+    expect(res.status).toBe(503);
+    expect(res.body.message).toContain("Invalid Gemini API key");
+  });
+
+  test("503 - model not found (404)", async () => {
+    axios.post.mockRejectedValue({
+      response: {
+        status: 404,
+        data: { error: "Model not found" },
       },
     });
 
